@@ -15,7 +15,7 @@ var (
 	titleColor    = color.New(color.FgHiWhite, color.Bold)
 	labelColor    = color.New(color.FgHiGreen)
 	labelaltColor = color.New(color.FgHiWhite)
-	template      = `{{ string . "title" }}{{ counters . "%s/%s" "%s/?" | yellow }} {{ bar . (white "[") (green "=") (green ">") (red "--") (white "]") }} {{ percent . | yellow }} {{ etime . | cyan }}`
+	template      = `{{ string . "title" }}{{ counters . "%s/%s" "%s/?" | yellow }} ({{ speed . | cyan }}) {{ bar . (white "[") (green "=") (green ">") (red "--") (white "]") }} {{ percent . | yellow }} {{ etime . | cyan }}`
 )
 
 // CopyFile copies a file from source to dest
