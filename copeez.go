@@ -18,10 +18,6 @@ func CopyFile(source string, dest string) error {
 	}
 
 	bar := pb.New(int(fi.Size())).SetUnits(pb.U_BYTES)
-	bar.ShowPercent = true
-	bar.ShowCounters = true
-	bar.ShowTimeLeft = true
-	bar.ShowSpeed = true
 	fmt.Printf("### File Copy Task\n#\tSRC: %s\n#\tDST: %s\n", source, dest)
 	bar.Start()
 
