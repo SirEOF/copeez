@@ -85,7 +85,7 @@ func CopyDir(source string, dest string) error {
 		fsource := filepath.Join(source, obj.Name())
 		fdest := filepath.Join(dest, obj.Name())
 
-		if obj.IsDir() {.
+		if obj.IsDir() {
 			err = CopyDir(fsource, fdest)
 			if err != nil {
 				errs = append(errs, err)
