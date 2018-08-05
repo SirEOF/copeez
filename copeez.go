@@ -33,6 +33,9 @@ func CopyFile(source string, dest string) error {
 	b.Set("prefix", name)
 	title := fmt.Sprintf("%s%s%s %s ", titleColor.Sprintf(" STATUS"), labelaltColor.Sprintf(":"), labelColor.Sprintf(name), labelaltColor.Sprintf(">>"))
 	b.Set("title", title)
+	defer func() {
+		fmt.Fprintf(color.Output, "%s %s %s %s %s\n", titleColor.Sprintf("["), color.HiRedString("**"), titleColor.Sprintf("COPY COMPLETE!"), color.HiRedString("**"), titleColor.Sprintf("]"))
+	}()
 
 	src, err := os.Open(source)
 	if err != nil {
@@ -42,6 +45,14 @@ func CopyFile(source string, dest string) error {
 	reader := b.NewProxyReader(src)
 
 	defer src.Close()
+
+	dstfi, err := os.Stat(dest)
+	if err == nil {
+		if dstfi.Size() == fi.Size() {
+			fmt.Fprintf(color.Output, " %s %s (%s)\n", titleColor.Sprintf(">>>"), titleColor.Sprintf("File already exists and sizes were the same! Moving on..."), labelColor.Sprintf("%d bytes", fi.Size()))
+			return nil
+		}
+	}
 
 	err = os.MkdirAll(filepath.Dir(dest), 0755)
 	if err != nil {
@@ -55,9 +66,6 @@ func CopyFile(source string, dest string) error {
 	defer dst.Close()
 
 	b.Start()
-	defer func() {
-		fmt.Fprintf(color.Output, "%s %s %s %s %s\n", titleColor.Sprintf("["), color.HiRedString("**"), titleColor.Sprintf("COPY COMPLETE!"), color.HiRedString("**"), titleColor.Sprintf("]"))
-	}()
 	defer b.Finish()
 
 	_, err = io.Copy(dst, reader)
